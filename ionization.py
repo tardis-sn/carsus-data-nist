@@ -68,6 +68,6 @@ df = pd.DataFrame(table_data[2:], columns=column)
 df = df.drop(df.columns[-1], axis=1)
 
 # Save the DataFrame to a CSV file
-df.to_csv('nist_data.csv', index=False)
+df.to_csv('nist_ionization_energies.csv', index=False)
 
 print("Data extracted and saved to 'nist_ionization_energies.csv'.")
