@@ -49,8 +49,24 @@ soup = BeautifulSoup(html_content, 'html5lib')
 pre_element = soup.find('pre')
 pre_text_data = pre_element.get_text()
 
+# to add the content into a csv file
+rows = pre_text_data.strip().split('\n')
 
-file_path = "NIST_ionization_data.txt"   
+table_data = []
+for row in rows:
+    cells = row.split('|')
+    cleaned_cells = [cell.strip() for cell in cells]
+    table_data.append(cleaned_cells)
 
-with open(file_path, "w") as file:
-    file.write(pre_text_data)
+# Remove empty rows
+table_data = [row for row in table_data if len(row) > 1]  
+
+# Convert the table data into a DataFrame
+column=['At. Num', 'Ion Charge', 'El. Name', 'Ground Shells', 'Ground Level', 'Ionization Energy (eV)', 'Uncertainty (eV)', 'x']
+df = pd.DataFrame(table_data[2:], columns=column)
+df = df.drop(df.columns[-1], axis=1)
+
+# Save the DataFrame to a CSV file
+df.to_csv('nist_data.csv', index=False)
+
+print("Data extracted and saved to 'nist_ionization_energies.csv'.")
