@@ -40,34 +40,36 @@ def download_ionization_energies(
 
     data = {k: v for k, v in data.items() if v is not False}
     data = {k:"on" if v is True else v for k, v in data.items()}
-
    
     r = requests.post(url=IONIZATION_ENERGIES_URL, data=data)
     return r.text
 
-html_content = download_ionization_energies()
-soup = BeautifulSoup(html_content, 'html5lib')
-pre_element = soup.find('pre')
-pre_text_data = pre_element.get_text()
+def parse_html_content(html_file_path):
+    
+    html_data=download_ionization_energies()
+    with open(html_file_path, "w", encoding="utf-8") as file:  # Save the html data to a file
+        file.write(html_data)
+    
+    soup = BeautifulSoup(html_data, 'html5lib')
+    pre_element = soup.find('pre')
+    pre_text_data = pre_element.get_text()
+    
+    rows = pre_text_data.strip().split('\n')
 
-# to add the content into a csv file
-rows = pre_text_data.strip().split('\n')
+    table_data = []
+    for row in rows:
+        cells = row.split('|')
+        cleaned_cells = [cell.strip() for cell in cells]
+        table_data.append(cleaned_cells)
+    
+    table_data = [row for row in table_data if len(row) > 1] # Remove empty rows
 
-table_data = []
-for row in rows:
-    cells = row.split('|')
-    cleaned_cells = [cell.strip() for cell in cells]
-    table_data.append(cleaned_cells)
+    column=['At. Num', 'Ion Charge', 'El. Name', 'Ground Shells', 'Ground Level', 'Ionization Energy (eV)', 'Uncertainty (eV)','x']
+    df = pd.DataFrame(table_data[2:], columns=column)
+    df = df.drop(df.columns[-1], axis=1)
+    return df
 
-# Remove empty rows
-table_data = [row for row in table_data if len(row) > 1]  
-
-# Convert the table data into a DataFrame
-column=['At. Num', 'Ion Charge', 'El. Name', 'Ground Shells', 'Ground Level', 'Ionization Energy (eV)', 'Uncertainty (eV)', 'x']
-df = pd.DataFrame(table_data[2:], columns=column)
-df = df.drop(df.columns[-1], axis=1)
-
-# Save the DataFrame to a CSV file
-df.to_csv('nist_ionization_energies.csv', index=False)
-
-print("Data extracted and saved to 'nist_ionization_energies.csv'.")
+file_path='ionization.html'
+csv_file_path='ionization_energies.csv'
+ionization_data=parse_html_content(file_path)
+ionization_data.to_csv(csv_file_path, index=False) # Save the DataFrame to a CSV file    
