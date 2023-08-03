@@ -40,7 +40,6 @@ jobs:
         id: install_dependencies
         run: | 
           pip install -r requirements.txt
-          pip install html5lib 
         
       - name: Run Python script
         id: run_script
