@@ -41,10 +41,15 @@ jobs:
         run: | 
           pip install -r requirements.txt
         
-      - name: Run Python script
-        id: run_script
+      - name: Run Python ionization energies script
+        id: run_ionization_energies_script
         run: | 
           python ionization.py
+
+      - name: Run Python atomic weights script 
+        id: run_atomic_weights_script
+        run: | 
+          python atomic_weights.py
           
       - name: Compare changes
         id: compare
@@ -57,7 +62,7 @@ jobs:
         id: commit_changes
         if: ${{ steps.compare.outcome == 'failure' }}
         run: |
-          git commit -m "nist ionization energies added"
+          git commit -m "nist ionization energies and atomic weights added"
 
       - name: Push changes
         if: ${{ steps.compare.outcome == 'failure' }}
