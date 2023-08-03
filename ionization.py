@@ -46,6 +46,16 @@ def download_ionization_energies(
     return r.text
 
 def check_folders(folder_name, file_name):
+    """
+    Checks if the folder exists and creates it if not.
+    
+    Parameters:
+        folder_name (str): Name of the folder to check/create.
+        file_name (str): Name of the file to create inside the folder.
+        
+    Returns:
+        str: The path to the file inside the folder.
+    """
     if not os.path.exists(folder_name):  # to check if the folder exists, and create it if not
         os.makedirs(folder_name)
 
@@ -53,6 +63,12 @@ def check_folders(folder_name, file_name):
     return file_path
         
 def parse_html_content(html_data):
+    """
+    Parses the HTML content to extract ionization energy data and saves it to a CSV file.
+    
+    Parameters:
+        html_data (str): The HTML data to parse.
+    """
     html_file_path = check_folders('html_files', 'ionization_energies.html')
     with open(html_file_path, "w", encoding="utf-8") as file:  # Save the html data to a file
         file.write(html_data)
@@ -71,7 +87,7 @@ def parse_html_content(html_data):
     
     table_data = [row for row in table_data if len(row) > 1] # Remove empty rows
 
-    column = ['At. Num', 'Ion Charge', 'El. Name', 'Ground Shells', 'Ground Level', 'Ionization Energy (eV)', 'Uncertainty (eV)','x']
+    column = ['At. Num', 'Ion Charge', 'El. Name', 'Ground Shells', 'Ground Level', 'Ionization Energy (eV)', 'Uncertainty (eV)', 'x']
     df = pd.DataFrame(table_data[2:], columns=column)
     df = df.drop(df.columns[-1], axis=1)
 
@@ -79,4 +95,5 @@ def parse_html_content(html_data):
     df.to_csv(csv_file_path, index=False)
     return
 
-ionization_energies = parse_html_content(download_ionization_energies())
+if __name__ == "__main__":
+        ionization_energies = parse_html_content(download_ionization_energies())
