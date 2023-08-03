@@ -1,4 +1,4 @@
-name: Check NIST ionization energies
+name: Check NIST ionization energies and atomic weights
 
 on:
   schedule:
