@@ -1,8 +1,10 @@
+import os
+
+import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
-import os
 from carsus.io.nist.ionization import download_ionization_energies
+
 
 def check_folders(folder_name, file_name):
     """
