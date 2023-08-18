@@ -3,6 +3,7 @@ import os
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
+from general import check_folders
 from carsus.io.nist.weightscomp import download_weightscomp
 
 
