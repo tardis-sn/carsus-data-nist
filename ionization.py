@@ -3,7 +3,7 @@ import os
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-from common_utlis import check_folders
+from common_utils import check_folders
 from carsus.io.nist.ionization import download_ionization_energies
 
         
@@ -41,4 +41,4 @@ def parse_ionization_html_content(html_data):
     return
 
 if __name__ == "__main__":
-        ionization_energies = parse_html_content(download_ionization_energies())
+        ionization_energies = parse_ionization_html_content(download_ionization_energies())
