@@ -6,29 +6,8 @@ from bs4 import BeautifulSoup
 from carsus.io.nist.weightscomp import download_weightscomp
 
 
-# Check and create a path to save files
-def check_folders(folder_name, file_name):
-    """
-    Check if the folder exists, and create it if it doesn't.
-    Parameters
-    ----------
-    folder_name : str
-        The folder name to check or create.
-    file_name : str
-        The name of the file.
-    Returns
-    -------
-    str
-        The full file path.
-    """
-    if not os.path.exists(folder_name):  # to check if the folder exists, and create it if not
-        os.makedirs(folder_name)
-
-    file_path = os.path.join(folder_name, file_name)
-    return file_path
-
 # Format the data
-def parse_html_content(html_content):
+def parse_weights_html_content(html_content):
     """
     Parses the HTML content and saves the data as CSV.
     Parameters
