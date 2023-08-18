@@ -5,25 +5,8 @@ import requests
 from bs4 import BeautifulSoup
 from carsus.io.nist.ionization import download_ionization_energies
 
-
-def check_folders(folder_name, file_name):
-    """
-    Checks if the folder exists and creates it if not.
-    
-    Parameters:
-        folder_name (str): Name of the folder to check/create.
-        file_name (str): Name of the file to create inside the folder.
         
-    Returns:
-        str: The path to the file inside the folder.
-    """
-    if not os.path.exists(folder_name):  # to check if the folder exists, and create it if not
-        os.makedirs(folder_name)
-
-    file_path = os.path.join(folder_name, file_name)
-    return file_path
-        
-def parse_html_content(html_data):
+def parse_ionization_html_content(html_data):
     """
     Parses the HTML content to extract ionization energy data and saves it to a CSV file.
     
