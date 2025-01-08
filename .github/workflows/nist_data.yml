@@ -8,15 +8,12 @@ on:
 env:
   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
-jobs:
-  build:
-    
-    defaults:
+defaults:
      run:
        shell: bash -l {0}
-
+jobs:
+  build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: act10ns/slack@v2.0.0
         with:
@@ -25,7 +22,7 @@ jobs:
         if: always()
         
       - name: Checkout github repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Configure git
         run: |
@@ -33,19 +30,17 @@ jobs:
           git config --global user.email "actions@github.com"
 
       - name: Clone tardis-sn/carsus
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: tardis-sn/carsus
           path: carsus
 
       - name: Setup environment
-        uses: conda-incubator/setup-miniconda@v2
+        uses: mamba-org/setup-micromamba@v2
         with:
-            miniforge-variant: Mambaforge
-            miniforge-version: latest
-            environment-file: carsus/carsus_env3.yml
-            activate-environment: carsus
-            use-mamba: true
+            environment-file: carsus/conda-linux-64.lock
+            init-shell: bash
+            environment-name: carsus
 
       - name: Install carsus
         id: install_carsus
