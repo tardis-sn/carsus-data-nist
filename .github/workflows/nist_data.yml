@@ -1,6 +1,9 @@
 name: Check NIST ionization energies and atomic weights
 
 on:
+  push:
+    branches:
+      - "*"
   schedule:
     - cron: '0 0 * * 0'  #runs on every Sunday midnight
   workflow_dispatch:
